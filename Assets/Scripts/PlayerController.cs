@@ -3,15 +3,18 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float movementSpeed = 5f;
-    [SerializeField] private float lookSpeed = 1f;
+    [SerializeField] private float mouseSensivity = 1f;
     [SerializeField] private float jumpPower = 1f;
-    [SerializeField] private LayerMask groundMask;
-    [SerializeField] private Transform groundCheck;
+    [SerializeField,Tooltip("Layer that consider as ground for ground check(functions like jump)")] 
+    private LayerMask groundMask;
+    [SerializeField,Tooltip("object near to the bottom of player for ground check function")] 
+    private Transform groundCheck;
     [SerializeField] private Camera playerCamera;
 
     private Rigidbody playerRigidbody;
     private BoxCollider playerCollider;
 
+    //mouse x-axis rotation 
     private float xRotation;
 
     private void Awake()
@@ -51,7 +54,7 @@ public class PlayerController : MonoBehaviour
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
 
-        transform.Rotate(Vector3.up * mouseX * lookSpeed);
+        transform.Rotate(mouseSensivity * mouseX * Vector3.up);
 
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -80f, 40f); // prevent flipping
