@@ -5,10 +5,13 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public event Action<bool> OnPlayerMoveStateChange;
+    public event Action OnPlayerJump;
 
     public Vector2 MovementDirection { get => movementDirection; }
+    public bool IsRunning { private set; get; }
 
     [SerializeField] private float movementSpeed = 5f;
+    [SerializeField] private float runningMultiplier = 5f;
     [SerializeField] private float mouseSensivity = 1f;
     [SerializeField] private float jumpPower = 1f;
     [SerializeField, Tooltip("Layer that consider as ground for ground check(functions like jump)")]
@@ -22,6 +25,7 @@ public class PlayerController : MonoBehaviour
 
     private Vector2 movementDirection;
     private bool isMoving;
+    private bool isRunning;
 
     //mouse x-axis rotation 
     private float xRotation;
@@ -49,8 +53,11 @@ public class PlayerController : MonoBehaviour
 
     private void HandlePlayerJump()
     {
-        if (Input.GetKey(KeyCode.Space) && IsOnGround())
+        if (Input.GetKeyDown(KeyCode.Space) && IsOnGround())
+        {
             playerRigidbody.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+            OnPlayerJump?.Invoke();
+        }
     }
 
     private bool IsOnGround()
@@ -75,29 +82,36 @@ public class PlayerController : MonoBehaviour
         float horizontal = Input.GetAxisRaw("Horizontal");//when player press A/D
         float vertical = Input.GetAxisRaw("Vertical");//when player press S/W
 
+        isRunning = Input.GetKey(KeyCode.LeftShift);
+
         if (horizontal == 0 && vertical == 0)
         {
-            UpdateMovementState(false, Vector2.zero);
+            UpdateMovementState(false, Vector2.zero, isRunning);
             return;
         }
 
         Vector3 moveDirection = (transform.forward * vertical + transform.right * horizontal).normalized;
 
-        UpdateMovementState(true, new Vector2(horizontal, vertical));
+        UpdateMovementState(true, new Vector2(horizontal, vertical), isRunning);
 
-        Vector3 newPosition = playerRigidbody.position + moveDirection * movementSpeed * Time.fixedDeltaTime;
+        float characterSpeed = isRunning ? movementSpeed * runningMultiplier : movementSpeed;
+
+        Vector3 newPosition = playerRigidbody.position + moveDirection * characterSpeed * Time.fixedDeltaTime;
         playerRigidbody.MovePosition(newPosition);
     }
 
-    private void UpdateMovementState(bool move, Vector2 direction)
+    private void UpdateMovementState(bool move, Vector2 direction, bool running)
     {
-        if (isMoving == move && movementDirection == direction)
+        if (isMoving == move && movementDirection == direction && IsRunning == running)
             return;
 
         isMoving = move;
 
+        IsRunning = isRunning;
+
         movementDirection = direction;
 
+        Debug.Log("UpdateMovementState: " + IsRunning.ToString());
         OnPlayerMoveStateChange?.Invoke(isMoving);
     }
 }

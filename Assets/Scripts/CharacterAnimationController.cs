@@ -2,6 +2,12 @@ using UnityEngine;
 
 public class PlayerAnimationController : MonoBehaviour
 {
+    public const string IS_JUMPING_FLAG = "IsJumping";
+    private const string IS_MOVING_FLAG = "IsMoving";
+    private const string IS_RUNNING_FLAG = "IsRunning";
+    private const string FORWARD_MOVEMENT = "ForwardMovement";
+    private const string SIDE_MOVEMENT = "SideMovement";
+
     private Animator animator;
     private PlayerController playerController;
 
@@ -14,11 +20,13 @@ public class PlayerAnimationController : MonoBehaviour
     private void Start()
     {
         playerController.OnPlayerMoveStateChange += PlayerController_OnPlayerMoveStateChange;
+        playerController.OnPlayerJump += PlayerController_OnPlayerJump;
     }
 
     private void OnDestroy()
     {
         playerController.OnPlayerMoveStateChange -= PlayerController_OnPlayerMoveStateChange;
+        playerController.OnPlayerJump -= PlayerController_OnPlayerJump;
     }
 
     private void PlayerController_OnPlayerMoveStateChange(bool isMoving)
@@ -28,8 +36,14 @@ public class PlayerAnimationController : MonoBehaviour
         float walk = isMoving ? direction.y : 0;
         float strafe = isMoving ? direction.x : 0;
 
-        animator.SetBool("isMoving", isMoving);
-        animator.SetFloat("Walk", walk);
-        animator.SetFloat("Strafe", strafe);
+        animator.SetBool(IS_MOVING_FLAG, isMoving);
+        animator.SetBool(IS_RUNNING_FLAG, playerController.IsRunning);
+        animator.SetFloat(FORWARD_MOVEMENT, walk);
+        animator.SetFloat(SIDE_MOVEMENT, strafe);
+    }
+
+    private void PlayerController_OnPlayerJump()
+    {
+        animator.SetBool(IS_JUMPING_FLAG, true);
     }
 }
