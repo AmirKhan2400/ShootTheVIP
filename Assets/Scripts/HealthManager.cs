@@ -31,6 +31,9 @@ public class HealthManager : MonoBehaviour, IDamageable
             healthValue = 0;
             isDead = true;
             OnDeath?.Invoke();
+
+            if (GameStateManager.Instance != null)
+                GameStateManager.Instance.SetPlayerDead();
         }
     }
 

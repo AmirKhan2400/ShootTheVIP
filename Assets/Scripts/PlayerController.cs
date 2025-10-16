@@ -1,14 +1,27 @@
 using System;
-using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     public event Action<bool> OnPlayerMoveStateChange;
     public event Action OnPlayerJump;
+    public event Action OnPlayerShootStateChange;
+    public event Action<PlayerAction> OnPlayerActionHappened;
 
     public Vector2 MovementDirection { get => movementDirection; }
     public bool IsRunning { private set; get; }
+    public bool IsShooting
+    {
+        private set
+        {
+            if (isShooting != value)
+            {
+                isShooting = value;
+                OnPlayerShootStateChange?.Invoke();
+            }
+        }
+        get => isShooting;
+    }
 
     [SerializeField] private float movementSpeed = 5f;
     [SerializeField] private float runningMultiplier = 5f;
@@ -26,6 +39,8 @@ public class PlayerController : MonoBehaviour
     private Vector2 movementDirection;
     private bool isMoving;
     private bool isRunning;
+    private bool isShooting;
+    private bool isDead = false;
 
     //mouse x-axis rotation 
     private float xRotation;
@@ -39,15 +54,40 @@ public class PlayerController : MonoBehaviour
         //Cursor.visible = false;
     }
 
+    private void Start()
+    {
+        if(GameStateManager.Instance != null)
+            GameStateManager.Instance.OnPlayerDied += Instance_OnPlayerDied;
+    }
+
+    private void OnDestroy()
+    {
+        if (GameStateManager.Instance != null)
+            GameStateManager.Instance.OnPlayerDied -= Instance_OnPlayerDied;
+    }
+
+    private void Instance_OnPlayerDied()
+    {
+        isDead = true;
+    }
+
     private void Update()
     {
+        if (isDead)
+            return;
+
         HandleMouseMovement();
 
         HandlePlayerJump();
+
+        HandlePlayerActions();
     }
 
     private void LateUpdate()
     {
+        if (isDead)
+            return;
+
         HandleMovement();
     }
 
@@ -57,6 +97,21 @@ public class PlayerController : MonoBehaviour
         {
             playerRigidbody.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
             OnPlayerJump?.Invoke();
+        }
+    }
+
+    //these will be removed after reload logic completed.
+    private float reloadCooldown = 5f;
+    private float lastReloadTime;
+    //actions like shooting - tossing grenade - reloading
+    private void HandlePlayerActions()
+    {
+        IsShooting = Input.GetMouseButtonDown(0) || Input.GetMouseButton(0);
+
+        if (Input.GetKeyDown(KeyCode.R) && Time.time - lastReloadTime >= reloadCooldown)
+        {
+            lastReloadTime = Time.time;
+            OnPlayerActionHappened?.Invoke(PlayerAction.Reload);
         }
     }
 
@@ -111,7 +166,11 @@ public class PlayerController : MonoBehaviour
 
         movementDirection = direction;
 
-        Debug.Log("UpdateMovementState: " + IsRunning.ToString());
         OnPlayerMoveStateChange?.Invoke(isMoving);
+    }
+
+    public enum PlayerAction
+    {
+        Reload, Toss
     }
 }

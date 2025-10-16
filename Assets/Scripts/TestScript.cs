@@ -1,16 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class TestScript : MonoBehaviour
 {
-    ////[SerializeField] private Weapon weapon;
-    ////void Update()
-    ////{
-    ////    if (Input.GetMouseButtonDown(0))
-    ////        weapon.Fire();
-    ////}
+    [SerializeField] private Weapon weapon;
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Z))
+            weapon.Fire();
+    }
 
     //[SerializeField] private Rigidbody bulletLocation;
 

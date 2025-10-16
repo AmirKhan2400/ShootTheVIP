@@ -1,7 +1,8 @@
 using UnityEngine;
 
-public class ResetJumpBehaviour : StateMachineBehaviour
+public class ResetBoolParamBehaviour : StateMachineBehaviour
 {
+    [SerializeField] private string boolParameterName;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     //{
@@ -17,7 +18,7 @@ public class ResetJumpBehaviour : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.SetBool(PlayerAnimationController.IS_JUMPING_FLAG, false);
+        animator.SetBool(boolParameterName, false);
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
