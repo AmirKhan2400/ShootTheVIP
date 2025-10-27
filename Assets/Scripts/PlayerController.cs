@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    //bool isMoving
     public event Action<bool> OnPlayerMoveStateChange;
     public event Action OnPlayerJump;
     public event Action OnPlayerShootStateChange;
@@ -36,6 +37,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody playerRigidbody;
     private BoxCollider playerCollider;
 
+    private PlayerWeaponHandler weaponHandler;
+
     private Vector2 movementDirection;
     private bool isMoving;
     private bool isRunning;
@@ -49,26 +52,22 @@ public class PlayerController : MonoBehaviour
     {
         playerRigidbody = GetComponent<Rigidbody>();
         playerCollider = GetComponent<BoxCollider>();
+        weaponHandler = GetComponent<PlayerWeaponHandler>();
 
-        //Cursor.lockState = CursorLockMode.Locked;
-        //Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     private void Start()
     {
-        if(GameStateManager.Instance != null)
-            GameStateManager.Instance.OnPlayerDied += Instance_OnPlayerDied;
+        if (GameStateManager.Instance != null)
+            GameStateManager.Instance.OnPlayerDied += GameStateManager_OnPlayerDied;
     }
 
     private void OnDestroy()
     {
         if (GameStateManager.Instance != null)
-            GameStateManager.Instance.OnPlayerDied -= Instance_OnPlayerDied;
-    }
-
-    private void Instance_OnPlayerDied()
-    {
-        isDead = true;
+            GameStateManager.Instance.OnPlayerDied -= GameStateManager_OnPlayerDied;
     }
 
     private void Update()
@@ -91,6 +90,11 @@ public class PlayerController : MonoBehaviour
         HandleMovement();
     }
 
+    private void GameStateManager_OnPlayerDied()
+    {
+        isDead = true;
+    }
+
     private void HandlePlayerJump()
     {
         if (Input.GetKeyDown(KeyCode.Space) && IsOnGround())
@@ -100,17 +104,17 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //these will be removed after reload logic completed.
-    private float reloadCooldown = 5f;
-    private float lastReloadTime;
     //actions like shooting - tossing grenade - reloading
     private void HandlePlayerActions()
     {
-        IsShooting = Input.GetMouseButtonDown(0) || Input.GetMouseButton(0);
+        IsShooting = Input.GetMouseButtonDown(0);// || Input.GetMouseButton(0)
 
-        if (Input.GetKeyDown(KeyCode.R) && Time.time - lastReloadTime >= reloadCooldown)
+        if (IsShooting && weaponHandler != null)
+            weaponHandler.FireCurrentWeapon();
+
+        if (Input.GetKeyDown(KeyCode.R) && weaponHandler != null)
         {
-            lastReloadTime = Time.time;
+            weaponHandler.ReloadCurrentWeapon();
             OnPlayerActionHappened?.Invoke(PlayerAction.Reload);
         }
     }
@@ -128,7 +132,7 @@ public class PlayerController : MonoBehaviour
         transform.Rotate(mouseSensivity * mouseX * Vector3.up);
 
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -80f, 40f); // prevent flipping
+        xRotation = Mathf.Clamp(xRotation, -40f, 40f); // prevent flipping
         playerCamera.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
     }
 

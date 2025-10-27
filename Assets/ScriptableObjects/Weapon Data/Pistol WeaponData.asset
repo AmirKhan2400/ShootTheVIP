@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ffd3a7ea766f10458d48f8c01188ee0, type: 3}
   m_Name: Pistol WeaponData
   m_EditorClassIdentifier: 
-  bulletFireRange: 10
-  bulletDamage: 5
+  bulletFireRange: 20
+  bulletDamage: 10
+  maxBulletCount: 60
+  bulletCountInMag: 12
