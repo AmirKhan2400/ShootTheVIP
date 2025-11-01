@@ -27,7 +27,8 @@ public class WeaponRigController : MonoBehaviour
         if (playerController != null)
             playerController.OnPlayerMoveStateChange += PlayerController_OnPlayerMoveStateChange;
 
-        GameStateManager.Instance.OnPlayerDied += GameStateManager_OnPlayerDied;
+        if (GameStateManager.Instance != null)
+            GameStateManager.Instance.OnPlayerDied += GameStateManager_OnPlayerDied;
     }
 
     private void GameStateManager_OnPlayerDied()

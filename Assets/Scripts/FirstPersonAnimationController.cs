@@ -18,7 +18,8 @@ public class FirstPersonAnimationController : MonoBehaviour
     {
         playerController.OnPlayerMoveStateChange += PlayerController_OnPlayerMoveStateChange;
 
-        GameStateManager.Instance.OnPlayerDied += Instance_OnPlayerDied;
+        if (GameStateManager.Instance != null)
+            GameStateManager.Instance.OnPlayerDied += Instance_OnPlayerDied;
     }
 
     private void OnDestroy()
