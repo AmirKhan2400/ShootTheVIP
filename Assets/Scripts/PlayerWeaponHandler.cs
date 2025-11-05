@@ -1,7 +1,8 @@
+using Mirror;
 using System;
 using UnityEngine;
 
-public class PlayerWeaponHandler : MonoBehaviour
+public class PlayerWeaponHandler : NetworkBehaviour
 {
     public event Action OnCurrentWeaponBulletCountChanged;
     public Weapon CurrentWeapon => currentWeapon;
@@ -21,17 +22,24 @@ public class PlayerWeaponHandler : MonoBehaviour
 
     private void CurrentWeapon_OnWeaponAmmoChanged()
     {
+        if (!isLocalPlayer)
+            return;
         OnCurrentWeaponBulletCountChanged?.Invoke();
     }
 
     public void FireCurrentWeapon()
     {
+        if (!isLocalPlayer)
+            return;
+
         if (currentWeapon != null)
             currentWeapon.Fire();
     }
 
     public void ReloadCurrentWeapon()
     {
+        if (!isLocalPlayer)
+            return;
         if (currentWeapon != null)
             currentWeapon.Reload();
     }

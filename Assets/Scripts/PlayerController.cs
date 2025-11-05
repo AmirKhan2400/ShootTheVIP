@@ -1,7 +1,8 @@
+using Mirror;
 using System;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : NetworkBehaviour
 {
     //bool isMoving
     public event Action<bool> OnPlayerMoveStateChange;
@@ -56,6 +57,8 @@ public class PlayerController : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        enabled = false; // disable until we know it's our player
     }
 
     private void Start()
@@ -68,6 +71,13 @@ public class PlayerController : MonoBehaviour
     {
         if (GameStateManager.Instance != null)
             GameStateManager.Instance.OnPlayerDied -= GameStateManager_OnPlayerDied;
+    }
+
+    public override void OnStartLocalPlayer()
+    {
+        enabled = true;
+
+        playerCamera.enabled = true;
     }
 
     private void Update()

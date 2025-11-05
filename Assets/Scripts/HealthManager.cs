@@ -1,16 +1,17 @@
+using Mirror;
 using System;
 using UnityEngine;
 
-public class HealthManager : MonoBehaviour, IDamageable
+public class HealthManager : NetworkBehaviour, IDamageable
 {
-    public float HealthValue 
+    public float HealthValue
     {
         private set
         {
             healthValue = value;
             OnHealthValueChanged?.Invoke();
         }
-        get => healthValue; 
+        get => healthValue;
     }
 
     public event Action OnDamage;
@@ -19,7 +20,10 @@ public class HealthManager : MonoBehaviour, IDamageable
 
     [SerializeField] private float maxHealth;
 
+    [SyncVar(hook = nameof(OnHealthValueChangedThroughNetwork))]
     private float healthValue;
+
+    [SyncVar]
     private bool isDead = false;
 
     private void Awake()
@@ -27,27 +31,49 @@ public class HealthManager : MonoBehaviour, IDamageable
         HealthValue = maxHealth;
     }
 
+    [Server]
     public void Damage(float damageValue)
     {
         if (isDead)
             return;
 
-        HealthValue -= damageValue;
-        OnDamage?.Invoke();
+        HealthValue = MathF.Max(HealthValue - damageValue, 0);
 
-        if (HealthValue <= 0)
-        {
-            HealthValue = 0;
-            isDead = true;
-            OnDeath?.Invoke();
+        DamageRPC();
 
-            if (GameStateManager.Instance != null)
-                GameStateManager.Instance.SetPlayerDead();
-        }
+        if (HealthValue == 0)
+            DieRPC();
     }
 
+    [ClientRpc]
+    private void DieRPC()
+    {
+        OnDeath?.Invoke();
+
+        if (GameStateManager.Instance != null)
+            GameStateManager.Instance.SetPlayerDead();
+    }
+
+    [ClientRpc]
+    private void DamageRPC()
+    {
+        OnDamage?.Invoke();
+    }
+
+    [Command]
     public void Heal(float healValue)
     {
+        HealRPC(healValue);
+    }
+
+    [ClientRpc]
+    private void HealRPC(float healValue)
+    {
         HealthValue = Mathf.Clamp(HealthValue + healValue, 0, maxHealth);
+    }
+
+    private void OnHealthValueChangedThroughNetwork(float oldValue, float newValue)
+    {
+        OnHealthValueChanged?.Invoke();
     }
 }

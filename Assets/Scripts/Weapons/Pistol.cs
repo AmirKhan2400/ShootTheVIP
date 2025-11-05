@@ -11,10 +11,10 @@ public class Pistol : Weapon
     private static readonly int ShootHash = Animator.StringToHash("Pistol Shoot");
     private static readonly int ReloadHash = Animator.StringToHash("Pistol Reload");
 
-    public override void Start()
-    {
-        base.Start();
+    public override Transform BulletFireTransform => playerCamera.transform;
 
+    private void Start()
+    {
         playerCamera = Camera.main;
 
         muzzleFlashParticles = bulletFirePoint.GetComponentsInChildren<ParticleSystem>().ToList();
@@ -38,17 +38,5 @@ public class Pistol : Weapon
         animator.Play(ShootHash);
 
         PlayShootParticles();
-
-        Vector3 bulletShootPoint = playerCamera.transform.position;
-
-        if (Physics.Raycast(bulletShootPoint, playerCamera.transform.forward, out RaycastHit hitInfo, weaponData.bulletFireRange))
-        {
-            Debug.Log("Pistol bullet hit something");
-            if (hitInfo.transform.TryGetComponent(out IDamageable damagable))
-            {
-                Debug.Log("Pistol bullet hit a IDamageable!");
-                damagable.Damage(weaponData.bulletDamage);
-            }
-        }
     }
 }
