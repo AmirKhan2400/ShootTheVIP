@@ -12,12 +12,23 @@ public class PlayerWeaponHandler : NetworkBehaviour
     private void Start()
     {
         currentWeapon.OnWeaponAmmoChanged += CurrentWeapon_OnWeaponAmmoChanged;
-    }
+
+        if (GameStateManager.Instance != null)
+            GameStateManager.Instance.OnLocalPlayerRespawned += OnLocalPlayerRespawned;
+    }    
 
     private void OnDestroy()
     {
         if (currentWeapon != null)
             currentWeapon.OnWeaponAmmoChanged -= CurrentWeapon_OnWeaponAmmoChanged;
+    }
+
+    private void OnLocalPlayerRespawned()
+    {
+        if (CurrentWeapon == null)
+            return;
+
+        CurrentWeapon.ResetAmmo();
     }
 
     private void CurrentWeapon_OnWeaponAmmoChanged()

@@ -39,8 +39,7 @@ public abstract class Weapon : NetworkBehaviour
     {
         base.OnStartServer();
 
-        currentMagBulletCount = weaponData.bulletCountInMag;
-        CurrentTotalBulletCount = weaponData.maxBulletCount - weaponData.bulletCountInMag;
+        ResetAmmo();
     }
 
     private void OnMagAmmoChanged(int oldValue, int newValue)
@@ -104,4 +103,10 @@ public abstract class Weapon : NetworkBehaviour
 
     public abstract void OnWeaponReload();
     public abstract void OnWeaponFire();
+
+    public void ResetAmmo()
+    {
+        currentMagBulletCount = weaponData.bulletCountInMag;
+        CurrentTotalBulletCount = weaponData.maxBulletCount - weaponData.bulletCountInMag;
+    }
 }

@@ -27,13 +27,18 @@ public class WeaponRigController : MonoBehaviour
         if (playerController != null)
             playerController.OnPlayerMoveStateChange += PlayerController_OnPlayerMoveStateChange;
 
-        if (GameStateManager.Instance != null)
-            GameStateManager.Instance.OnPlayerDied += GameStateManager_OnPlayerDied;
+        GameStateManager.Instance.OnLocalPlayerDied += GameStateManager_OnPlayerDied;
+        GameStateManager.Instance.OnLocalPlayerRespawned += GameStateManager_OnLocalPlayerRespawned;
     }
 
     private void GameStateManager_OnPlayerDied()
     {
         isPlayerDead = true;
+    }
+
+    private void GameStateManager_OnLocalPlayerRespawned()
+    {
+        isPlayerDead = false;
     }
 
     private void OnDestroy()
@@ -42,7 +47,7 @@ public class WeaponRigController : MonoBehaviour
             playerController.OnPlayerMoveStateChange -= PlayerController_OnPlayerMoveStateChange;
 
         if (GameStateManager.Instance != null)
-            GameStateManager.Instance.OnPlayerDied -= GameStateManager_OnPlayerDied;
+            GameStateManager.Instance.OnLocalPlayerDied -= GameStateManager_OnPlayerDied;
 
     }
 

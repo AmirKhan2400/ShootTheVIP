@@ -36,4 +36,14 @@ public class CustomNetworkManager : NetworkManager
 
         OnClientDisconnected?.Invoke();
     }
+
+    public override void OnServerAddPlayer(NetworkConnectionToClient conn)
+    {
+        base.OnServerAddPlayer(conn);
+
+        if (GameStateManager.Instance != null)
+            GameStateManager.Instance.RegisterPlayer(conn.identity);
+        else
+            UnityEngine.Debug.LogError("Failed to register player to GameStateManager");
+    }
 }

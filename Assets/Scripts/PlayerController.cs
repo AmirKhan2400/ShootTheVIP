@@ -63,14 +63,18 @@ public class PlayerController : NetworkBehaviour
 
     private void Start()
     {
-        if (GameStateManager.Instance != null)
-            GameStateManager.Instance.OnPlayerDied += GameStateManager_OnPlayerDied;
+        GameStateManager.Instance.OnLocalPlayerDied += GameStateManager_OnPlayerDied;
+
+        GameStateManager.Instance.OnLocalPlayerRespawned += GameStateManager_OnLocalPlayerRespawned;
     }
 
     private void OnDestroy()
     {
         if (GameStateManager.Instance != null)
-            GameStateManager.Instance.OnPlayerDied -= GameStateManager_OnPlayerDied;
+        {
+            GameStateManager.Instance.OnLocalPlayerDied -= GameStateManager_OnPlayerDied;
+            GameStateManager.Instance.OnLocalPlayerRespawned -= GameStateManager_OnLocalPlayerRespawned;
+        }
     }
 
     public override void OnStartLocalPlayer()
@@ -103,6 +107,11 @@ public class PlayerController : NetworkBehaviour
     private void GameStateManager_OnPlayerDied()
     {
         isDead = true;
+    }
+
+    private void GameStateManager_OnLocalPlayerRespawned()
+    {
+        isDead = false;
     }
 
     private void HandlePlayerJump()

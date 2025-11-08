@@ -31,27 +31,44 @@ public class HealthManager : NetworkBehaviour, IDamageable
         HealthValue = maxHealth;
     }
 
+    private void Start()
+    {
+        if (GameStateManager.Instance != null)
+            GameStateManager.Instance.OnPlayerRespawned += OnPlayerRespawned;
+    }
+
+    private void OnDestroy()
+    {
+        if (GameStateManager.Instance != null)
+            GameStateManager.Instance.OnPlayerRespawned -= OnPlayerRespawned;
+    }
+
     [Server]
     public void Damage(float damageValue)
     {
         if (isDead)
             return;
 
+        Debug.Log(string.Format("Damaged: health: {0} - damageValue: {1}", HealthValue, damageValue));
+
         HealthValue = MathF.Max(HealthValue - damageValue, 0);
+
+        Debug.Log(string.Format("Damaged HealthValue Updated: {0}", HealthValue, damageValue));
 
         DamageRPC();
 
         if (HealthValue == 0)
+        {
+            GameStateManager.Instance.SetPlayerDead(netIdentity);
+
             DieRPC();
+        }
     }
 
     [ClientRpc]
     private void DieRPC()
     {
         OnDeath?.Invoke();
-
-        if (GameStateManager.Instance != null)
-            GameStateManager.Instance.SetPlayerDead();
     }
 
     [ClientRpc]
@@ -75,5 +92,14 @@ public class HealthManager : NetworkBehaviour, IDamageable
     private void OnHealthValueChangedThroughNetwork(float oldValue, float newValue)
     {
         OnHealthValueChanged?.Invoke();
+    }
+
+    private void OnPlayerRespawned(NetworkIdentity playerId)
+    {
+        if (netIdentity == playerId)
+        {
+            isDead = false;
+            HealthValue = maxHealth;
+        }
     }
 }
