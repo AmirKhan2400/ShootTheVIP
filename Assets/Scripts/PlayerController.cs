@@ -82,6 +82,7 @@ public class PlayerController : NetworkBehaviour
         enabled = true;
 
         playerCamera.enabled = true;
+        playerCamera.GetComponent<AudioListener>().enabled = true;
     }
 
     private void Update()
@@ -104,7 +105,7 @@ public class PlayerController : NetworkBehaviour
         HandleMovement();
     }
 
-    private void GameStateManager_OnPlayerDied()
+    private void GameStateManager_OnPlayerDied(bool _)
     {
         isDead = true;
     }

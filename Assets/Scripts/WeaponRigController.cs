@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class WeaponRigController : MonoBehaviour
+public class WeaponRigController : NetworkPlayer
 {
     [SerializeField] private PlayerController playerController;
 
@@ -31,7 +31,7 @@ public class WeaponRigController : MonoBehaviour
         GameStateManager.Instance.OnLocalPlayerRespawned += GameStateManager_OnLocalPlayerRespawned;
     }
 
-    private void GameStateManager_OnPlayerDied()
+    private void GameStateManager_OnPlayerDied(bool _)
     {
         isPlayerDead = true;
     }
@@ -58,7 +58,7 @@ public class WeaponRigController : MonoBehaviour
 
     private void Update()
     {
-        if (isPlayerDead)
+        if (isPlayerDead || !isLocalPlayer)
             return;
 
         HandleSway();

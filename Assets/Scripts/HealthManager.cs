@@ -59,6 +59,9 @@ public class HealthManager : NetworkBehaviour, IDamageable
 
         if (HealthValue == 0)
         {
+            if (TryGetComponent(out PlayerState playerState))
+                playerState.ConsumeRespawnCount();
+
             GameStateManager.Instance.SetPlayerDead(netIdentity);
 
             DieRPC();

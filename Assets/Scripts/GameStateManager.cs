@@ -1,13 +1,16 @@
 using Mirror;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameStateManager : NetworkSingleton<GameStateManager>
 {
+    public event Action<NetworkIdentity> Server_OnPlayerDied; // triggered on server when a player died
+
     public event Action<NetworkIdentity> OnPlayerDied;  // triggered on all clients when someone dies
     public event Action<NetworkIdentity> OnPlayerRespawned;  // triggered on all clients when someone respawn
 
-    public event Action OnLocalPlayerDied;              // only for local client UI
+    public event Action<bool> OnLocalPlayerDied;        // only for local client UI
     public event Action OnLocalPlayerRespawned;         // only for local client UI     
 
     [SyncVar]
@@ -40,6 +43,8 @@ public class GameStateManager : NetworkSingleton<GameStateManager>
         alivePlayers.Remove(playerIdentity);
         deadPlayers.Add(playerIdentity);
 
+        Server_OnPlayerDied?.Invoke(playerIdentity);
+
         RpcNotifyPlayerDied(playerIdentity);
     }
 
@@ -67,7 +72,8 @@ public class GameStateManager : NetworkSingleton<GameStateManager>
         // if this is *our* player, trigger local death event
         if (deadPlayer.isLocalPlayer)
         {
-            OnLocalPlayerDied?.Invoke();
+            bool canRespawn = deadPlayer.GetComponent<PlayerState>().CanRespawn;
+            OnLocalPlayerDied?.Invoke(canRespawn);
         }
         else
         {
@@ -89,5 +95,13 @@ public class GameStateManager : NetworkSingleton<GameStateManager>
         {
             respawnPlayerID.gameObject.SetActive(true);
         }
+    }
+
+    public List<NetworkIdentity> GetPlayerList()
+    {
+        List<NetworkIdentity> allPlayers = new List<NetworkIdentity>();
+        allPlayers.AddRange(alivePlayers);
+        allPlayers.AddRange(deadPlayers);
+        return allPlayers;
     }
 }
