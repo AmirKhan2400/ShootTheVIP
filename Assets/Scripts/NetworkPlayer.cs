@@ -9,7 +9,7 @@ public class NetworkPlayer : NetworkBehaviour
     public event Action<bool, Vector2> OnRunningStateChange;
     public event Action OnJumpingStateChange;
 
-    private PlayerController localController;
+    private OnlinePlayerController localController;
 
     [SyncVar(hook = nameof(OnMovingStateChangeHook))] private bool isMoving;
     [SyncVar(hook = nameof(OnRunningStateChangeHook))] private bool isRunning;

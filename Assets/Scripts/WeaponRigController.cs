@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class WeaponRigController : NetworkPlayer
 {
-    [SerializeField] private PlayerController playerController;
+    [SerializeField] private OnlinePlayerController playerController;
 
     [Header("Sway Settings")]
     public float swayAmount = 1.5f;

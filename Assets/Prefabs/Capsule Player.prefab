@@ -2345,7 +2345,7 @@ GameObject:
   - component: {fileID: 6210197785211760823}
   - component: {fileID: 6145646736078875196}
   - component: {fileID: 3985797348173863047}
-  - component: {fileID: 867682182758331291}
+  - component: {fileID: -6841493650787067200}
   - component: {fileID: 1982789021823539406}
   - component: {fileID: 5865822081385259887}
   - component: {fileID: 4605372052937335626}
@@ -2532,7 +2532,7 @@ MonoBehaviour:
   rotationSensitivity: 0.01
   positionPrecision: 0.01
   scalePrecision: 0.01
---- !u!114 &867682182758331291
+--- !u!114 &-6841493650787067200
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2541,7 +2541,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4599950599919265557}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28bc2fd0027fa1d489af8efea088836e, type: 3}
+  m_Script: {fileID: 11500000, guid: a5800016b7fcb97429003eda1f4ffc14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncDirection: 0
@@ -13800,7 +13800,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  playerController: {fileID: 867682182758331291}
+  playerController: {fileID: 0}
   swayAmount: 1.5
   swaySmooth: 8
   bobSpeed: 6
