@@ -2550,7 +2550,7 @@ MonoBehaviour:
   movementSpeed: 3
   runningMultiplier: 2
   mouseSensivity: 1
-  jumpPower: 250
+  jumpPower: 300
   groundMask:
     serializedVersion: 2
     m_Bits: 64

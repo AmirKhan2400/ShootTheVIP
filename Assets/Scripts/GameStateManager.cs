@@ -57,8 +57,10 @@ public class GameStateManager : NetworkSingleton<GameStateManager>
         deadPlayers.Remove(playerIdentity);
         alivePlayers.Add(playerIdentity);
 
+        Vector3 spawnPoint = GetSpawnPointBaseOnTeam(playerIdentity);
+
         playerIdentity.gameObject.GetComponent<NetworkTransformReliable>()
-            .ServerTeleport(new Vector3(500, 1, 500), Quaternion.identity);
+            .ServerTeleport(spawnPoint, Quaternion.identity);
 
         RpcNotifyPlayerRespawn(playerIdentity);
     }
@@ -103,5 +105,11 @@ public class GameStateManager : NetworkSingleton<GameStateManager>
         allPlayers.AddRange(alivePlayers);
         allPlayers.AddRange(deadPlayers);
         return allPlayers;
+    }
+
+    private Vector3 GetSpawnPointBaseOnTeam(NetworkIdentity playerIdentity)
+    {
+        //TODO
+        return Vector3.zero;
     }
 }
