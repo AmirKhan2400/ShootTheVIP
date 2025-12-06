@@ -14,7 +14,7 @@ public class ThirdPersonAnimationController : MonoBehaviour
     private const string SIDE_MOVEMENT = "SideMovement";
 
     [SerializeField] private Animator animator;
-    private NetworkPlayer networkPlayer;
+    [SerializeField] private NetworkPlayer networkPlayer;
 
     private List<Collider> colliders = new List<Collider>();
     private List<Rigidbody> Rigidbodies = new List<Rigidbody>();

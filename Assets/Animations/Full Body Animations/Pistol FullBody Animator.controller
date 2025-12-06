@@ -170,7 +170,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: a94baf9609642e2498f645a3da0f4dc3, type: 2}
+  m_Motion: {fileID: 7400000, guid: 4e986f9b4ff029e40be9550e7a964137, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -278,7 +278,7 @@ BlendTree:
   m_Name: Blend Tree
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: a070c23b7ce72a24393f02c50e164948, type: 2}
+    m_Motion: {fileID: 7400000, guid: 5cb8dff90c41d874b88b36b19a93af47, type: 2}
     m_Threshold: 0
     m_Position: {x: 1, y: 0}
     m_TimeScale: 1
@@ -286,7 +286,7 @@ BlendTree:
     m_DirectBlendParameter: ForwardMovement
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 2145ddd59602ff147be7d18a69c698e0, type: 2}
+    m_Motion: {fileID: 7400000, guid: 74840e226b7d7574eb91d86e7acd32e3, type: 2}
     m_Threshold: 0.33333334
     m_Position: {x: -1, y: 0}
     m_TimeScale: 1
@@ -294,7 +294,7 @@ BlendTree:
     m_DirectBlendParameter: ForwardMovement
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 99d8f61677d9f98419ebd62cbe12ad8e, type: 2}
+    m_Motion: {fileID: 7400000, guid: d4fcca269b4d2b74e9c5fcac25066a0d, type: 2}
     m_Threshold: 0.6666667
     m_Position: {x: 0, y: 1}
     m_TimeScale: 2
@@ -302,7 +302,7 @@ BlendTree:
     m_DirectBlendParameter: ForwardMovement
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 92d203632e4c1234b9cc6b262d3fed94, type: 2}
+    m_Motion: {fileID: 7400000, guid: 2404950ebd595cc45ae41a4c0a53f3f7, type: 2}
     m_Threshold: 1
     m_Position: {x: 0, y: -1}
     m_TimeScale: 2
@@ -436,7 +436,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 838000bcc2daee8408f1c87e306c025c, type: 2}
+  m_Motion: {fileID: 7400000, guid: e4a17fdb8df271347b657a76de73b4da, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -448,7 +448,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FullBody Animator
+  m_Name: Pistol FullBody Animator
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: ForwardMovement
@@ -576,7 +576,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: c36592adf3cb3bf45b5a3833f2b22030, type: 2}
+  m_Motion: {fileID: 7400000, guid: fc6f6a942c4d7e94e9d8b9abf3142d9d, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -894,7 +894,7 @@ BlendTree:
   m_Name: Blend Tree
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: ca34d6385a429334a92c5eaf647d6ff5, type: 2}
+    m_Motion: {fileID: 7400000, guid: 857441ad2dc31164c9f177d5aa1016ad, type: 2}
     m_Threshold: 0
     m_Position: {x: 1, y: 0}
     m_TimeScale: 1
@@ -902,7 +902,7 @@ BlendTree:
     m_DirectBlendParameter: Blend
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 49b5cda5880907944b9a9f8936906e0b, type: 2}
+    m_Motion: {fileID: 7400000, guid: a8094c5d91dab6647a4e57517dc33b30, type: 2}
     m_Threshold: 0.33333334
     m_Position: {x: -1, y: 0}
     m_TimeScale: 1
@@ -910,7 +910,7 @@ BlendTree:
     m_DirectBlendParameter: Blend
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 99d8f61677d9f98419ebd62cbe12ad8e, type: 2}
+    m_Motion: {fileID: 7400000, guid: d4fcca269b4d2b74e9c5fcac25066a0d, type: 2}
     m_Threshold: 0.6666667
     m_Position: {x: 0, y: 1}
     m_TimeScale: 1
@@ -918,7 +918,7 @@ BlendTree:
     m_DirectBlendParameter: Blend
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 92d203632e4c1234b9cc6b262d3fed94, type: 2}
+    m_Motion: {fileID: 7400000, guid: 2404950ebd595cc45ae41a4c0a53f3f7, type: 2}
     m_Threshold: 1
     m_Position: {x: 0, y: -1}
     m_TimeScale: 1
